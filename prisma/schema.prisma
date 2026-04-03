@@ -1,0 +1,60 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model event {
+  event_id    Int     @id @default(autoincrement())
+  event_judul String?
+  event_image String?
+}
+
+model gallery {
+  gallery_id           Int       @id @default(autoincrement())
+  gallery_judul        String    @db.VarChar(100)
+  gallery_deskripsi    String
+  gallery_kategori     String    @db.VarChar(255)
+  gallery_image        String?   @db.VarChar(255)
+  created_date         DateTime? @default(now()) @db.Timestamp(6)
+  updated_date         DateTime? @default(now()) @db.Timestamp(6)
+  gallery_sertilengkap String?   @db.VarChar(50)
+  gallery_slug         String?   @unique @db.VarChar(255)
+}
+
+model news {
+  news_id          Int       @id @default(autoincrement())
+  news_keyword     String?
+  news_description String?
+  news_slug        String?   @unique @db.VarChar(255)
+  news_title       String?
+  news_date        DateTime? @db.Date
+  news_writer      String?   @db.VarChar(100)
+  news_editor      String?   @db.VarChar(100)
+  news_image       String?
+  news_content     String?
+  news_source      String?
+  news_tags        String?
+  news_status      String?   @db.VarChar(50)
+  news_category    String?   @db.VarChar(100)
+  created_date     DateTime? @db.Timestamp(6)
+  updated_date     DateTime? @db.Timestamp(6)
+}
+
+model youtube {
+  youtube_id   Int    @id @default(autoincrement())
+  youtube_link String @db.VarChar(255)
+}
+
+model achievement {
+  id          Int       @id @default(autoincrement())
+  title       String?
+  image       String?
+  description String?
+  year        DateTime? @db.Date
+  category    String?
+}
