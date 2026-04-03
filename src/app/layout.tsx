@@ -83,7 +83,7 @@ export default function RootLayout({
         className={`
           min-h-full 
           flex flex-col 
-          bg-[#000000] // Latar Belakang Hitam Sesuai Logo
+          
           text-[#EAEAEA] // Teks Putih Keabuan agar NYAMAN dibaca
           font-sans 
         `}
