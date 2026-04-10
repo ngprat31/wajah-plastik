@@ -21,13 +21,7 @@ const team: TeamMember[] = [
     image:
       "https://res.cloudinary.com/dskzbz06t/image/upload/q_auto/f_auto/v1775221361/Djanar_wwtctc.webp",
   },
-  {
-    name: "Gede Praja Mahardika",
-    role: "Public Relation",
-    quote: "Merawat dan Menanam",
-    image:
-      "https://res.cloudinary.com/dskzbz06t/image/upload/q_auto/f_auto/v1775221397/Praja_peh3aa.webp",
-  },
+ 
   {
     name: "Kadek Okik Sanjaya",
     role: "Designer Grafis",
