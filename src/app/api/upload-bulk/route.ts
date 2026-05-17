@@ -4,12 +4,6 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
-
 export async function POST(request: Request) {
   try {
     const formData = await request.formData();
@@ -19,47 +13,52 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Tidak ada file yang diunggah.' }, { status: 400 });
     }
 
+    const folderName = 'wajah-plastik';
+
     const uploadPromises = files.map(async (file) => {
       const arrayBuffer = await file.arrayBuffer();
       const buffer = Buffer.from(arrayBuffer);
 
-      // 1. Ambil nama asli file tanpa ekstensi untuk event_judul
-      const fileNameWithoutExt = file.name.replace(/\.[^/.]+$/, "");
+      const baseName = file.name.replace(/\.[^/.]+$/, "");
+      const cleanFileName = baseName.replace(/\s+/g, "_");
 
       return new Promise<{ event_judul: string; event_image: string }>((resolve, reject) => {
+        // PERBAIKAN: Masukkan kredensial langsung ke dalam method upload_stream 
+        // untuk memastikan process.env terbaca saat request masuk
         const uploadStream = cloudinary.uploader.upload_stream(
           {
-            folder: 'wajah-plastik',
-            public_id: fileNameWithoutExt, // Menyesuaikan public_id Cloudinary dengan nama file asli
-            format: 'webp',                // OTOMATIS CONVERT KE WEBP
-            transformation: [
-              { quality: 'auto' }          // Optimasi kualitas gambar secara otomatis
-            ]
+            cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+            api_key: process.env.CLOUDINARY_API_KEY,
+            api_secret: process.env.CLOUDINARY_API_SECRET,
+            folder: folderName,
+            public_id: cleanFileName,
+            format: 'webp',
+            transformation: [{ quality: 'auto' }]
           },
+          
           (error, result) => {
             if (error) return reject(error);
             
-            // Cloudinary akan mengembalikan URL yang sudah berakhiran .webp
             resolve({
-              event_judul: fileNameWithoutExt,
-              event_image: result?.secure_url || '',
+              event_judul: baseName,
+              event_image: result?.public_id || `${folderName}/${cleanFileName}`,
             });
           }
         );
         uploadStream.end(buffer);
       });
     });
-
-    // Eksekusi paralel upload ke Cloudinary
+console.log("=== DEBUG ENV ===");
+  console.log("CLOUD NAME:", process.env.CLOUDINARY_CLOUD_NAME);
+  console.log("=================");
     const uploadedImages = await Promise.all(uploadPromises);
 
-    // Simpan data kolektif ke Neon DB menggunakan Prisma
     const savedEvents = await prisma.event.createMany({
       data: uploadedImages,
     });
 
     return NextResponse.json({
-      message: 'Bulk upload dan konversi WebP berhasil!',
+      message: 'Bulk upload berhasil!',
       count: savedEvents.count,
     }, { status: 200 });
 
