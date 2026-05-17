@@ -3,13 +3,29 @@
 import prisma from "@/lib/prisma";
 import type { Gallery } from "@/types/gallery";
 
-export async function getGalleryItems(search?: string) {
+
+export async function getGalleryItems(search?: string, category?: string) {
   return await prisma.gallery.findMany({
     where: {
-      gallery_judul: {
-        contains: search || "", // Cari judul yang mengandung kata kunci
-        mode: "insensitive", // Tidak peduli huruf besar/kecil
-      },
+      AND: [
+        {
+          gallery_judul: {
+            contains: search || "", 
+            mode: "insensitive", 
+          },
+        },
+        // Jika category ada dan bukan "all", tambahkan filter kategori
+        ...(category && category !== "all" 
+          ? [
+              {
+                gallery_kategori: {
+                  equals: category,
+                  mode: "insensitive" as const, // Pastikan mencocokkan "Potrait" atau "Tematik"
+                },
+              },
+            ] 
+          : []),
+      ],
     },
     orderBy: {
       created_date: "desc",

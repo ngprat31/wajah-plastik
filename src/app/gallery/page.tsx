@@ -1,18 +1,21 @@
-// src/app/gallery/page.tsx
 import Link from "next/link";
 import Image from "next/image";
 import { getCloudinaryUrl } from "@/lib/cloudinary";
 import { getGalleryItems } from "./actions";
-import SearchInput from "./SearchInput"; // Impor komponen search baru
+import SearchInput from "./SearchInput";
+import CategoryTabs from "./CategoryTabs"; // Komponen baru
 import { Metadata } from "next";
 
 interface Props {
-  searchParams: Promise<{ q?: string }>;
+  searchParams: Promise<{ q?: string; category?: string }>;
 }
 
 export default async function GalleryPage({ searchParams }: Props) {
-  const query = (await searchParams).q;
-  const items = await getGalleryItems(query);
+  const params = await searchParams;
+  const query = params.q;
+  const category = params.category || "all"; // Default ke 'all'
+
+  const items = await getGalleryItems(query, category);
 
   return (
     <main className="p-8 bg-[#FDFDFD] mt-20 min-h-screen">
@@ -28,6 +31,9 @@ export default async function GalleryPage({ searchParams }: Props) {
 
           <SearchInput />
         </header>
+
+        {/* Tab Switcher */}
+        <CategoryTabs activeCategory={category} />
 
         {/* Gallery Grid */}
         {items.length > 0 ? (
@@ -63,7 +69,7 @@ export default async function GalleryPage({ searchParams }: Props) {
         ) : (
           <div className="py-20 text-center">
             <p className="text-gray-400 italic">
-              Tidak ada karya ditemukan dengan judul "{query}"
+              Tidak ada karya ditemukan di kategori ini.
             </p>
           </div>
         )}
@@ -71,8 +77,8 @@ export default async function GalleryPage({ searchParams }: Props) {
     </main>
   );
 }
+
 export const metadata: Metadata = {
-  title: "Koleksi Galeri",
-  description:
-    "Eksplorasi galeri karya seni Wajah Plastik. Setiap guratan adalah potongan sampah plastik yang dirangkai menjadi mahakarya eksklusif.",
+  title: "Koleksi Galeri | Wajah Plastik",
+  description: "Eksplorasi galeri karya seni Wajah Plastik (Tematik & Potrait).",
 };

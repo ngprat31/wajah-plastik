@@ -8,6 +8,7 @@ import Achievements from "@/components/sections/Achievements";
 import Team from "@/components/sections/Team";
 import { Metadata } from "next";
 import Image from "next/image";
+import HeroVideo from "@/components/sections/HeroVideo";
 
 export default async function Home() {
   const thematicWorks = await prisma.gallery.findMany({
@@ -41,6 +42,7 @@ export default async function Home() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen  py-2">
+      <HeroVideo />
       <Hero />
       <Intro />
       <Values />

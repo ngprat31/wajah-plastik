@@ -8,9 +8,12 @@ import { usePathname } from "next/navigation";
 const navLinks = [
   { name: "Home", href: "/" },
   { name: "About us", href: "/about" },
+  { name: "Contact", href: "/contact" },
   { name: "Gallery", href: "/gallery" },
+  { name: "Merchandise", href: "/merchandise" },
   { name: "News", href: "/news" },
   { name: "Event", href: "/event" },
+  { name: "Book", href: "/book" },
   { name: "Achievement", href: "/achievement" },
   { name: "Youtube", href: "/youtube" },
 ];
@@ -39,7 +42,7 @@ export default function Navbar() {
         className={`fixed top-0 w-full z-[100] transition-all duration-500 px-6 md:px-12 ${
           isScrolled || isOpen
             ? "bg-white/95 backdrop-blur-md py-4 shadow-sm"
-            : "bg-transparent py-7"
+            : "bg-white py-7"
         }`}
       >
         <div className="max-w-7xl mx-auto flex items-center justify-between">
@@ -64,7 +67,7 @@ export default function Navbar() {
                 <span className="text-[#FF0000]">Wajah</span> Plastik
               </span>
               <span className="text-[9px] tracking-[0.3em] uppercase text-[#D4AF37] font-medium">
-                Art & Exclusive
+                Different, Unique, Classy 
               </span>
             </div>
           </Link>

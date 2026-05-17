@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { getCloudinaryUrl } from "@/lib/cloudinary";
 
-const creatorPhotoId = "v1775216690/about1_xqi1rb.webp";
+const creatorPhotoId = "v1775216690/made_oplass_imxnkq.png";
 
 export default function AboutWajahPlastik() {
   return (
@@ -26,7 +26,7 @@ export default function AboutWajahPlastik() {
             {/* Container Foto dengan Ukuran yang Terkontrol */}
             <div className="relative w-full aspect-[4/5] overflow-hidden mb-8 border border-gray-100 shadow-inner group-hover:border-[#D4AF37]/30 transition-all duration-500">
               <Image
-                src={getCloudinaryUrl(creatorPhotoId)}
+                src="https://res.cloudinary.com/dskzbz06t/image/upload/q_auto/f_auto/made_oplass_imxnkq.png"
                 alt="Made Agus Janardana, S.Pd., Gr., M.Kom"
                 // Menggunakan fill dengan object-cover agar gambar tetap proporsional di dalam aspect ratio
                 fill

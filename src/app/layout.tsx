@@ -6,6 +6,7 @@ import "./globals.css";
 import Footer from "@/components/Footer";
 import PageTransition from "@/components/PageTransition";
 import Cta from "@/components/Cta";
+import WhatsAppFAB from "@/components/WhatsappFAB";
 
 const roboto = Roboto({
   variable: "--font-roboto",
@@ -94,6 +95,7 @@ export default function RootLayout({
         </PageTransition>
         <Cta />
         <Footer />
+        <WhatsAppFAB />
       </body>
     </html>
   );
